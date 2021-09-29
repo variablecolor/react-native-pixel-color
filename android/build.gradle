@@ -1,15 +1,24 @@
 apply plugin: 'com.android.library'
 
+def getProjectProperty(name, defaultValue){
+    if (rootProject.ext.has(name)){
+        return rootProject.ext[name]
+    }
+
+    return defaultValue
+}
+
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion getProjectProperty("compileSdkVersion", 29)
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion getProjectProperty('minSdkVersion', 21)
+        targetSdkVersion getProjectProperty("targetSdkVersion", 29)
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -18,5 +27,7 @@ android {
 }
 
 dependencies {
-    compile 'com.facebook.react:react-native:+'
+    implementation 'com.facebook.react:react-native:+'
+
+    implementation "androidx.appcompat:appcompat:${getProjectProperty("androidXVersion", "1.2.0")}"
 }
