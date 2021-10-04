@@ -73,6 +73,11 @@ public class PixelColorModule extends ReactContextBaseJavaModule {
         try {
 
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), pictureURI);
+            if(!bitmap.isMutable()){
+                Bitmap converted = bitmap.copy(Bitmap.Config.RGB_565, false);
+                bitmap.recycle();
+                bitmap = converted;
+            }
 
             int rgb = bitmap.getPixel(x, y);
             return "#" + Integer.toHexString(rgb).substring(2).toUpperCase();
@@ -90,6 +95,11 @@ public class PixelColorModule extends ReactContextBaseJavaModule {
 
             ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), pictureURI);
             bitmap = ImageDecoder.decodeBitmap(source);
+            if(!bitmap.isMutable()){
+                Bitmap converted = bitmap.copy(Bitmap.Config.RGB_565, false);
+                bitmap.recycle();
+                bitmap = converted;
+            }
 
             int rgb = bitmap.getPixel(x, y);
             return "#" + Integer.toHexString(rgb).substring(2).toUpperCase();
